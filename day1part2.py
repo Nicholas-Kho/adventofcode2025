@@ -18,23 +18,20 @@ for l in lines:
     code = l.split("\n")[0]
     array = list(code)
     print(array)
-    if array[0] == 'R':
-        amount = int(code.split(array[0])[1])
-        num += int(amount)
-        pointing += abs(math.floor(amount / 99))
-        pointing += 1 if num != num % 100 and abs(math.floor(amount / 99)) else 0
-        num = num % 100
-    elif array[0] == 'L':
-        amount = int(code.split(array[0])[1])
-        num += -int(amount)
-        pointing += abs(math.floor(amount / 99))
-        pointing += 1 if num != num % 100 and abs(math.floor(amount / 99)) == 0 else 0
-        num = num % 100
-    else:
-        print(array[0])
-        raise Exception("Neither R or L")
+
+    start = num
+    direction = 1 if array[0] == 'R' else -1
+    amount = int(l[1:])
+    num += direction * amount
+    pointing += abs(math.floor(num/99))
+    #pointing += 1 if (math.floor(num/100) == 0) and math.floor(start/100) == 0 else 0
+    #pointing -= 1 if start == 0 and direction == -1 else 0
+    num = num % 100
+    # i think i suck at maths so i guve up and im doing it the easy way (stepping)
+
+
+    print(num, ", ", pointing)
 
 
 print(num)
 print(pointing)
-
