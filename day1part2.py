@@ -14,6 +14,7 @@ def turnDial(num, amount):
 
 
 
+
 for l in lines:
     code = l.split("\n")[0]
     array = list(code)
