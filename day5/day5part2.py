@@ -1,22 +1,48 @@
 with open("day5.txt") as f:
     lines = f.read()
 
+def mergeFirstRange(ranges):
+    #print(ranges, "hi")
+    l = ranges[0][0]
+    r = ranges[0][1]
+    #print(ranges, l, r)
+    #print(ranges)
+    while True:
+        for i in range(1, len(ranges)):
+            replace = False
+            if r >= ranges[i][0] >= l:
+                ranges[i][0] = l
+                if l <= ranges[i][1] <= r:
+                    ranges[i][1] = r
+                replace = True
+            elif l <= ranges[i][1] <= r:
+                ranges[i][1] = r
+                if r >= ranges[i][0] >= l:
+                    ranges[i][0] = l
+                replace = True
+            elif (l <= ranges[i][0] and r >= ranges[i][1]):
+                ranges[i] = (l, r)
+                replace = True
+            elif (ranges[i][0] <= l and ranges[i][1] >= r):
+                ranges.pop(0)
+                return ranges
+            if replace:
+                ranges.pop(0)
+                return mergeFirstRange(ranges)
+        #print("returning", ranges)
+        return ranges
+
 ranges = lines.split("\n\n")[0]
 unique = []
 for r in ranges.split("\n"):
     l = int(r.split("-")[0])
     r = int(r.split("-")[1])
-    for range in unique:
-        if (r >= range[1]):
-            range[0] = l
-        if (l <= range[0]):
-            range[1] = r
+    #print(l, r)
+    unique.insert(0, [l, r])
+    unique = mergeFirstRange(unique)
 
-def mergeRange(coord, ranges):
-    l = coord[0]
-    r = coord[1]
-
-    if (r > range[1]):
-        range[0] = l
-    if (l <= range[0]):
-        range[1] = r
+total = 0
+for r in unique:
+    total += r[1]-r[0] + 1
+print(total)
+print(unique)
